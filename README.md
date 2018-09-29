@@ -8,7 +8,7 @@ A data pipeline made to present realtime data in grafana
 ```docker-compose up -d ```
 
 ### Create topic "Measurements"
-``docker-compose exec kafka kafka-topics --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic measurements ``
+``docker-compose exec broker kafka-topics --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic measurements ``
 
 
 ### Generate random data w/ksql-datagen
