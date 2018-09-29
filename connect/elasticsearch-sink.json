@@ -2,8 +2,8 @@
   "name":"elasticsearch-sink",
   "config": {
     "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
-    "topics":"NOTIFICATION",
-    "topics.index.map":"MEASUREMENTS:measurements_index",
+    "topics":"measurements",
+    "topics.index.map":"measurements:measurements_index",
     "connection.url":"http://localhost:9200",
     "type.name":"kafka-connect",
     "key.ignore":"true",
