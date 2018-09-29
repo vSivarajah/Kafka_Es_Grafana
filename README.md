@@ -12,3 +12,4 @@ A data pipeline made to present realtime data in grafana
 
 
 ### Generate random data w/ksql-datagen
+``docker-compose exec ksql-datagen ksql-datagen quickstart=users format=json topic=measurements maxInterval=1000 ``
