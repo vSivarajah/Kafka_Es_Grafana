@@ -15,7 +15,7 @@ Note : Some of the commands in this tutorial is based on the assumption that doc
 
 
 #### Load the elasticsearch-sink connector
-``
+```
 curl -X POST \
   http://192.168.99.100:8083/connectors/ \
   -H 'Accept: application/json' \
@@ -36,7 +36,7 @@ curl -X POST \
       "connection.url": "http://elasticsearch:9200"
     }
 }'
-``
+```
 
 #### Generate random data w/ksql-datagen
 ``docker-compose exec ksql-datagen ksql-datagen quickstart=users format=json topic=measurements maxInterval=1000 ``
