@@ -14,10 +14,47 @@ Note : Some of the commands in this tutorial is based on the assumption that doc
 ``docker-compose exec broker kafka-topics --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic measurements ``
 
 
+
+#### Load dynamic elastic template to ensure that _TS fields are used
+
+```
+curl -XPUT "http://localhost:9200/_template/kafkaconnect/" -H 'Content-Type: application/json' -d'
+{
+  "template": "*",
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "_default_": {
+      "dynamic_templates": [
+        {
+          "dates": {
+            "match": "EXTRACT_TS",
+            "mapping": {
+              "type": "date"
+            }
+          }
+        },
+        {
+          "non_analysed_string_template": {
+            "match": "*",
+            "match_mapping_type": "long",
+            "mapping": {
+              "type": "keyword"
+            }
+          }}
+      ]
+    }
+  }
+}'
+
+```
+
 #### Load the elasticsearch-sink connector
 ```
 curl -X POST \
-  http://192.168.99.100:8083/connectors/ \
+  http://localhost:8083/connectors/ \
   -H 'Accept: application/json' \
   -H 'Cache-Control: no-cache' \
   -H 'Content-Type: application/json' \
@@ -33,7 +70,10 @@ curl -X POST \
       "value.converter": "org.apache.kafka.connect.json.JsonConverter",
       "type.name": "type.name=kafkaconnect",
       "topic.index.map": "measurements:measurements_index",
-      "connection.url": "http://elasticsearch:9200"
+      "connection.url": "http://elasticsearch:9200",
+      "transforms": "ExtractTimestamp",
+      "transforms.ExtractTimestamp.type": "org.apache.kafka.connect.transforms.InsertField$Value",
+      "transforms.ExtractTimestamp.timestamp.field" : "EXTRACT_TS"
     }
 }'
 ```
