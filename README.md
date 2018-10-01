@@ -9,10 +9,34 @@ Note : Some of the commands in this tutorial is based on the assumption that doc
 ### Boot up docker
 ```docker-compose up -d ```
 
-### Create topic "Measurements"
+#### Create topic
 
 ``docker-compose exec broker kafka-topics --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic measurements ``
 
 
-### Generate random data w/ksql-datagen
+#### Load the elasticsearch-sink connector
+```
+curl -X POST \
+  http://192.168.99.100:8083/connectors/ \
+  -H 'Accept: application/json' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "elasticsearch-sink",
+    "config": {
+      "schema.ignore": "true",
+      "topics": "measurements",
+      "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+      "value.converter.schemas.enable": false,
+      "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+      "key.ignore": "true",
+      "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+      "type.name": "type.name=kafkaconnect",
+      "topic.index.map": "measurements:measurements_index",
+      "connection.url": "http://elasticsearch:9200"
+    }
+}'
+```
+
+#### Generate random data w/ksql-datagen
 ``docker-compose exec ksql-datagen ksql-datagen quickstart=users format=json topic=measurements maxInterval=1000 ``
