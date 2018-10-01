@@ -183,12 +183,10 @@ services:
 
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
     ports:
       - 9200:9200
     environment:
-      PLUGINS: appbaseio/dejavu
-      DPTS: -Dindex.number_of_shards=1 -Dindex.number_of_replicas=0
       xpack.security.enabled: "false"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
