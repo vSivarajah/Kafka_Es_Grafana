@@ -1,0 +1,35 @@
+{
+        "namespace": "streams",
+        "name": "measurements",
+        "type": "record",
+        "fields": [
+                {"name": "measurement_time", "type": {
+                    "type": "long",
+                    "format_as_time" : "unix_long",
+                    "arg.properties": {
+                       "iteration": { "start": 1, "step": 10}
+                    }
+                }},
+                {"name": "measurement_id", "type": {
+                    "type": "string",
+                    "arg.properties": {
+                        "regex": "id_[1-9][0-9][0-9]"
+                    }
+                }},
+                {"name": "component_id", "type": {
+                    "type": "string",
+                    "arg.properties": {
+                        "regex": "component_[1-9]?"
+                    }
+                }},
+                {"name": "voltage", "type": {
+                    "type": "int",
+                    "arg.properties": {
+                    "range": {
+                        "min": 1,
+                        "max": 1000
+                    }
+                    }
+                }}
+        ]
+}
