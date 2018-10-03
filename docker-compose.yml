@@ -150,6 +150,8 @@ services:
       - connect
     volumes:
       - mi2:/usr/share/java/monitoring-interceptors/
+      - mavro:/usr/share/measurements/
+
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
                        cub kafka-ready -b broker:9092 1 40 && \
                        echo Waiting for Confluent Schema Registry to be ready... && \
@@ -199,3 +201,4 @@ services:
 
 volumes:
     mi2: {}
+    mavro: {}
