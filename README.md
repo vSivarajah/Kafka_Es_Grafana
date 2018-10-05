@@ -3,15 +3,12 @@ A data pipeline made to present realtime data in grafana.
 
 Note : Some of the commands in this tutorial is based on the assumption that docker-machine is being used. 
 
-### Update max_map_count for Elasticsearch to prevent it from failing
+## Update max_map_count for Elasticsearch to prevent it from failing
 ```sudo sysctl -w vm.max_map_count=262144```
 
-### Boot up docker
+## Boot up docker
 ```docker-compose up -d ```
-
-#### Create topic
-
-``docker-compose exec broker kafka-topics --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic measurements ``
+- On boot up, there will be created a topic if not exist and random data will be outputted to the created topic. This is defined by the schema measurements.avro
 
 
 
