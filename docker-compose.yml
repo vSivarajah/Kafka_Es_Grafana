@@ -59,6 +59,7 @@ services:
       - "8083:8083"
     volumes:
       - mi2:/usr/share/java/monitoring-interceptors/
+      - mavro:/scripts/
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker:9092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
@@ -136,8 +137,12 @@ services:
       - broker
       - connect
       - ksql-server
+    volumes:
+      - kschema:/usr/share/doc/ksql-schema/
+
     entrypoint: /bin/sh
     tty: true
+
 
   ksql-datagen:
     image: confluentinc/ksql-examples:5.0.0
@@ -164,6 +169,7 @@ services:
                        propertiesFile=/etc/ksql/datagen.properties \
                        bootstrap-server=broker:9092 && \
                        tail -f /dev/null'"
+
     environment:
       KSQL_CONFIG_DIR: "/etc/ksql"
       KSQL_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/ksql/log4j-rolling.properties"
@@ -195,6 +201,10 @@ services:
     environment:
       xpack.security.enabled: "false"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    volumes:
+      - es:/usr/share/elasticsearch/scripts/
+      
+    tty: true
 
 
   grafana:
@@ -206,3 +216,5 @@ services:
 volumes:
     mi2: {}
     mavro: {}
+    kschema : {}
+    es: {}
